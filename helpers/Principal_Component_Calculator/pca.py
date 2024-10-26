@@ -1,11 +1,11 @@
 import numpy as np
+import seaborn as sns
 """
 Comps is the number of principal components to find
 Data is the incoming data that we are finding the components of
 """
 def pca(comps = 2, data = [[]]):
-    # Normalize Data
-    # normalizedData = normalizeData(data)
+    # Standardize Data
     standardizedData = standardizeData(data)
     
     # Compute Covariance Matrix
@@ -22,20 +22,10 @@ def pca(comps = 2, data = [[]]):
     # Compute Explained Variance
     explained_variance = sorted_eigenvalues / np.sum(sorted_eigenvalues)
 
-    projectedData = data.dot(sorted_eigenvectors)
+    projectedData = standardizedData.dot(sorted_eigenvectors)
    
-    return [sorted_eigenvalues, sorted_eigenvectors, explained_variance, projectedData[:,:comps]]
+    return [sorted_eigenvalues, sorted_eigenvectors, explained_variance, projectedData[:,:comps], covMatrix]
 
-
-
-def normalizeData(data):
-    result=[]
-    featureCount = len(data[0])
-    for i in range(featureCount):
-        row = data[:,i]
-        normalized = (row - np.min(row)) / np.max(row)
-        result.append(normalized)
-    return np.transpose(result)
 
 def standardizeData(data):
     result=[]
@@ -50,43 +40,27 @@ def standardizeData(data):
 
 
 def calculateCovariance(data):
-    observationCount = len(data)
     featureCount = len(data[0])
-    variances = list()
+    observationCount = len(data)
     covMatrix = [ [0]*featureCount for i in range(featureCount)]
-
-    # for number of features:
-    for i in range(featureCount):
-        # find the mean of feature N
-        featureMean = np.sum(data[:,i]) / observationCount
-        # subtract mean from all observations
-        lessFeatureMean = data[:,i] - featureMean
-        # take sum of the squares of differences
-        squaredLessMean = pow(lessFeatureMean, 2)
-        summedMeans = sum(squaredLessMean)
-        # devide by 1 less than the number to get the sample variance
-        variance = summedMeans/(len(data[:,i]) - 1)
-        variances.append(variance)
-    # print(variances)
-    # print(covMatrix)
 
     # For each pair of variables
     for a in range(featureCount):
         for b in range(a, featureCount):
-            if a == b:
-                covMatrix[a][b] = variances[a]
-            else:
-                featureA_Mean = np.sum(data[:,a]) / observationCount
-                featureB_Mean = np.sum(data[:,b]) / observationCount
-                # Subtract the mean of the first feature from values of the first feature
-                featureA = data[:,a] - featureA_Mean
-                # subtract the mean of the second feature from values of the second feature
-                featureB = data[:,b] - featureB_Mean
-                # Multiply the corresponding observations (X1*Y1),(X2*Y2),... ect...
-                # Sum the resultant products and divide by (n-1)
-                productSumAB = sum(a*b for a, b in zip(featureA, featureB))
-                covAB = productSumAB / (observationCount - 1)
-                # Arrange values into covariance matrix. remember that cov(X,Y) === cov(Y,X)
-                covMatrix[a][b] = covAB
-                covMatrix[b][a] = covAB
+            # Subtract the mean of the first feature from values of the first feature
+            featureA_Mean = np.sum(data[:,a]) / observationCount
+            featureA = data[:,a] - featureA_Mean
+
+            # subtract the mean of the second feature from values of the second feature
+            featureB_Mean = np.sum(data[:,b]) / observationCount
+            featureB = data[:,b] - featureB_Mean
+
+            # Sum the products of features (A1*B1)+(A2*B2)+....+(An*Bn)
+            productSumAB = sum(a*b for a, b in zip(featureA, featureB))
+            # and divide by (# of observations - 1)
+            covAB = productSumAB / (observationCount - 1)
+            
+            # Insert cov(A,B) values into covariance matrix. remember that cov(A,B) === cov(B,A)
+            covMatrix[a][b] = covAB
+            covMatrix[b][a] = covAB
     return covMatrix
