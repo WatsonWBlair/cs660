@@ -14,16 +14,17 @@ def pca(comps = 2, data = [[]]):
     # Call to Eigne_Calculator helper function
     eigenvalues, eigenvectors = np.linalg.eig(covMatrix)
     
-    order_of_importance = np.argsort(eigenvalues)[::-1] 
-
     # Create feature vector, sorted by their importance
+    order_of_importance = np.argsort(eigenvalues)[::-1]
     sorted_eigenvalues = eigenvalues[order_of_importance]
     sorted_eigenvectors = eigenvectors[:,order_of_importance] # sort the columns
     
     # Compute Explained Variance
     explained_variance = sorted_eigenvalues / np.sum(sorted_eigenvalues)
+
+    projectedData = data.dot(sorted_eigenvectors)
    
-    return [sorted_eigenvalues, sorted_eigenvectors, explained_variance]
+    return [sorted_eigenvalues, sorted_eigenvectors, explained_variance, projectedData[:,:comps]]
 
 
 
