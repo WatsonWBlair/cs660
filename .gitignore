@@ -1,4 +1,3 @@
 .DS_Store
-*.js
 **/__pycache__/**
 *.pyc
