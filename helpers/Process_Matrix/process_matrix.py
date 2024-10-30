@@ -2,6 +2,8 @@ import numpy as np
 from sklearn.decomposition import PCA
 from helpers.Timers.timer import run_timer
 from typing import List
+import logging
+from concurrent.futures import ThreadPoolExecutor
 
 # from helpers.Eigne_Calculator.[filename] import [eig_func] as eigen_manual
 from helpers.Principal_Component_Calculator.pca import pca as pca_manual
@@ -29,30 +31,28 @@ class MatrixProcessor:
     def process_matrix(self, i: int, data: np.ndarray):
         label = self.labels[i]
         
-        # Eigen Decomposition
-        results, exec_time = run_timer(eigen_manual, data)
-        self.execution_times['manual_eig'].append(exec_time)
-        self.results_summary['manual_eig'].append(results)
+        computations = {
+            'manual_eig': (run_timer, eigen_manual, data),
+            'sklearn_eig': (run_timer, np.linalg.eig, data),
+            'manual_pca': (run_timer, pca_manual, self.n_components, data),
+            'sklearn_pca': (run_timer, self._sklearn_pca, data),
+            'manual_svd': (run_timer, svd_manual, data),
+            'sklearn_svd': (run_timer, np.linalg.svd, data),
+        }
 
-        results, exec_time = run_timer(np.linalg.eig, data)
-        self.execution_times['sklearn_eig'].append(exec_time)
-        self.results_summary['sklearn_eig'].append(results)
-        
-        # PCA Processing
-        results, exec_time = run_timer(pca_manual, self.n_components, data)
-        self.execution_times['manual_pca'].append(exec_time)
-        self.results_summary['manual_pca'].append(results)
+        for key, (timer_func, func, *args) in computations.items():
+            try:
+                results, exec_time = timer_func(func, *args)
+                self.execution_times[key].append(exec_time)
+                self.results_summary[key].append(results)
+            except Exception as e:
+                logging.error(f"Error in {key} for {label} matrix: {e}")
 
+    def _sklearn_pca(self, data: np.ndarray) -> np.ndarray:
         sklearn_pca = PCA(n_components=self.n_components)
-        results, exec_time = run_timer(sklearn_pca.fit_transform, data)
-        self.execution_times['sklearn_pca'].append(exec_time)
-        self.results_summary['sklearn_pca'].append(results)
+        return sklearn_pca.fit_transform(data)
 
-        # Singular Value Decomposition (SVD)
-        results, exec_time = run_timer(svd_manual, data)
-        self.execution_times['manual_svd'].append(exec_time)
-        self.results_summary['manual_svd'].append(results)
-
-        results, exec_time = run_timer(np.linalg.svd, data)
-        self.execution_times['sklearn_svd'].append(exec_time)
-        self.results_summary['sklearn_svd'].append(results)
+    def execute_all(self, data_list: List[np.ndarray]):
+        with ThreadPoolExecutor() as executor:
+            for i, data in enumerate(data_list):
+                executor.submit(self.process_matrix, i, data)
