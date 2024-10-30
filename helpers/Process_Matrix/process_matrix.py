@@ -15,4 +15,35 @@ def svd_manual(data):
     return np.array([]), np.array([]), np.array([])
 
 def process_matrix(i, data, labels, execution_times, results_summary):
-    pass
+    print(f"\nRunning computations on {labels[i]} matrix")
+    
+    # Manual Eigen
+    results, exec_time = run_timer(eigen_manual, data)
+    execution_times['manual_eig'].append(exec_time)
+    results_summary['manual_eig'].append(results)
+
+    # NumPy Eigen
+    results, exec_time = run_timer(np.linalg.eig, data)
+    execution_times['sklearn_eig'].append(exec_time)
+    results_summary['sklearn_eig'].append(results)
+
+    # Manual PCA
+    results, exec_time = run_timer(pca_manual, 2, data)
+    execution_times['manual_pca'].append(exec_time)
+    results_summary['manual_pca'].append(results)
+
+    # NumPy PCA
+    sklearn_pca = PCA(n_components=2)
+    results, exec_time = run_timer(sklearn_pca.fit_transform, data)
+    execution_times['sklearn_pca'].append(exec_time)
+    results_summary['sklearn_pca'].append(results)
+
+    # Manual SVD
+    results, exec_time = run_timer(svd_manual, data)
+    execution_times['manual_svd'].append(exec_time)
+    results_summary['manual_svd'].append(results)
+
+    # Numy SVD
+    results, exec_time = run_timer(np.linalg.svd, data)
+    execution_times['sklearn_svd'].append(exec_time)
+    results_summary['sklearn_svd'].append(results)
