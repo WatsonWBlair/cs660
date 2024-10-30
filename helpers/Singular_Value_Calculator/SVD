@@ -1,0 +1,40 @@
+import numpy as np
+import pandas as pd
+import matplotlib as plt
+import sympy as smp
+from sympy.solvers import solve
+from sympy import Symbol
+from sympy import *
+#Build Array, and the Transpose of that Array
+Matrix=np.array([[0,1,1],[np.sqrt(2),2,0],[0,1,1]])
+Transpose=np.transpose(Matrix)
+
+#Use .dot to create AtA and AAt matrices
+Multiplied_U=np.dot(Matrix, Transpose)
+Multiplied_V=np.dot(Transpose, Matrix)
+
+#find eigenvalues and eigenvectors of each matrix
+values_U, vectors_U=np.linalg.eig(Multiplied_U)
+
+values_V,vectors_V=np.linalg.eig(Multiplied_V)
+
+
+#Find singular values, the square roots of eigenvalues for each matrix
+sigma_U=np.sqrt(values_U)
+sigma_V=np.sqrt(values_V)
+
+
+
+#Create Singular Value Array
+Sing_Values=[sigma_U,sigma_V]
+
+SV_Array=np.zeros((3,3), int)
+np.fill_diagonal(SV_Array, Sing_Values)
+print(SV_Array)
+
+#Create U and V vector arrays
+matrix_U=np.array(vectors_U)
+matrix_V=np.transpose(vectors_V)
+
+#Create Singular Value Decomposition
+SVD=np.dot(matrix_U, np.dot(SV_Array, matrix_V))
