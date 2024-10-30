@@ -25,3 +25,34 @@ class MatrixProcessor:
             'manual_svd': [], 'sklearn_svd': []
         }
         self.results_summary = {key: [] for key in self.execution_times.keys()}
+
+    def process_matrix(self, i: int, data: np.ndarray):
+        label = self.labels[i]
+        
+        # Eigen Decomposition
+        results, exec_time = run_timer(eigen_manual, data)
+        self.execution_times['manual_eig'].append(exec_time)
+        self.results_summary['manual_eig'].append(results)
+
+        results, exec_time = run_timer(np.linalg.eig, data)
+        self.execution_times['sklearn_eig'].append(exec_time)
+        self.results_summary['sklearn_eig'].append(results)
+        
+        # PCA Processing
+        results, exec_time = run_timer(pca_manual, self.n_components, data)
+        self.execution_times['manual_pca'].append(exec_time)
+        self.results_summary['manual_pca'].append(results)
+
+        sklearn_pca = PCA(n_components=self.n_components)
+        results, exec_time = run_timer(sklearn_pca.fit_transform, data)
+        self.execution_times['sklearn_pca'].append(exec_time)
+        self.results_summary['sklearn_pca'].append(results)
+
+        # Singular Value Decomposition (SVD)
+        results, exec_time = run_timer(svd_manual, data)
+        self.execution_times['manual_svd'].append(exec_time)
+        self.results_summary['manual_svd'].append(results)
+
+        results, exec_time = run_timer(np.linalg.svd, data)
+        self.execution_times['sklearn_svd'].append(exec_time)
+        self.results_summary['sklearn_svd'].append(results)
