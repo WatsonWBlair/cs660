@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from helpers.Timers.timer import run_timer
 from typing import List
@@ -56,3 +57,36 @@ class MatrixProcessor:
         with ThreadPoolExecutor() as executor:
             for i, data in enumerate(data_list):
                 executor.submit(self.process_matrix, i, data)
+
+    def plot_execution_times(self):
+        fig, axs = plt.subplots(2, 1, figsize=(12, 10))
+
+        # Plotting Manual Execution Times
+        axs[0].plot(self.labels, self.execution_times['manual_eig'], marker='o', label='Eigen', linestyle='-')
+        axs[0].plot(self.labels, self.execution_times['manual_pca'], marker='o', label='PCA', linestyle='--')
+        axs[0].plot(self.labels, self.execution_times['manual_svd'], marker='o', label='SVD', linestyle=':')
+
+        # Customize the first subplot for Manual Times
+        axs[0].set_title("Manual Execution Times")
+        axs[0].set_xlabel("Matrix Size")
+        axs[0].set_ylabel("Execution Time (seconds)")
+        axs[0].legend()
+        axs[0].grid()
+
+        # Plotting Numpy Execution Times
+        axs[1].plot(self.labels, self.execution_times['sklearn_eig'], marker='o', label='Eigen', linestyle='-')
+        axs[1].plot(self.labels, self.execution_times['sklearn_pca'], marker='o', label='PCA', linestyle='--')
+        axs[1].plot(self.labels, self.execution_times['sklearn_svd'], marker='o', label='SVD', linestyle=':')
+
+        # Customize the second subplot for Numpy Times
+        axs[1].set_title("NumPy Execution Times")
+        axs[1].set_xlabel("Matrix Size")
+        axs[1].set_ylabel("Execution Time (seconds)")
+        axs[1].legend()
+        axs[1].grid()
+
+        # Adjust layout to fit labels and titles
+        plt.tight_layout()
+
+        # Show the plot
+        plt.show()
