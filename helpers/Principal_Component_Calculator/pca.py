@@ -64,3 +64,30 @@ def calculateCovariance(data):
             covMatrix[a][b] = covAB
             covMatrix[b][a] = covAB
     return covMatrix
+
+def mean(x): # based on np.mean(X, axis = 0)  
+    return sum(x)/len(x)  
+
+def std(x): # based on np.std(X, axis = 0)
+    return (sum((i - mean(x))**2 for i in x)/len(x))**0.5
+
+def standardize_data(X):
+    return (X - mean(X))/std(X)
+
+def covariance(x): # based on: np.matmul(np.array.T, np.array)/(np.array.shape[0]-1)
+    n = x.shape[0]
+
+    # Centering the data by subtracting the mean of each column (feature)
+    mean_centered = x - x.mean()
+    
+    # Initializing an empty matrix to accumulate the covariances
+    cov_matrix = np.zeros((x.shape[1], x.shape[1])) # todo: reproduce 'zeros' method manually
+
+    # Adding each outer product to the covariance matrix
+    for i in range(n):
+        cov_matrix += np.outer(mean_centered[i], mean_centered[i]) # todo: reproduce 'outer' method manually
+    
+    # Dividing by (n - 1) to finalize the covariance matrix
+    cov_matrix /= (n - 1)
+
+    return cov_matrix
