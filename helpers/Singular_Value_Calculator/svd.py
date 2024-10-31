@@ -4,7 +4,6 @@ import matplotlib as plt
 import sympy as smp
 from sympy.solvers import solve
 from sympy import Symbol
-Matrix=np.random.randint(1,10,size=(6,6))
 
 def SVDSetup(Matrix):
     #Build array, and transpose of that array
