@@ -56,7 +56,7 @@ class BenchmarkUtility:
     def batch_benchmark(self, data_list: List[np.ndarray]):
         with ThreadPoolExecutor() as executor:
             for i, data in enumerate(data_list):
-                executor.submit(self.process_matrix, i, data)
+                executor.submit(self.benchmark, i, data)
 
     def plot_execution_times(self):
         fig, axs = plt.subplots(2, 1, figsize=(12, 10))
