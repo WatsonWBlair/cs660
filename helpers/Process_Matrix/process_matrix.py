@@ -18,7 +18,7 @@ def svd_manual(data):
     # Placeholder for the actual manual SVD logic
     return np.array([]), np.array([]), np.array([])
 
-class MatrixProcessor:
+class BenchmarkUtility:
     def __init__(self, labels: List[str], n_components: int = 2):
         self.labels = labels
         self.n_components = n_components
@@ -29,7 +29,7 @@ class MatrixProcessor:
         }
         self.results_summary = {key: [] for key in self.execution_times.keys()}
 
-    def process_matrix(self, i: int, data: np.ndarray):
+    def benchmark(self, i: int, data: np.ndarray):
         label = self.labels[i]
         
         computations = {
@@ -53,7 +53,7 @@ class MatrixProcessor:
         sklearn_pca = PCA(n_components=self.n_components)
         return sklearn_pca.fit_transform(data)
 
-    def execute_all(self, data_list: List[np.ndarray]):
+    def batch_benchmark(self, data_list: List[np.ndarray]):
         with ThreadPoolExecutor() as executor:
             for i, data in enumerate(data_list):
                 executor.submit(self.process_matrix, i, data)
