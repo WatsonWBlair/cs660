@@ -7,11 +7,9 @@ from sympy import Symbol
 
 #Build Arrays, and Transpose of those arrays
 def SVDSetupU(Matrix):
-    #Build array, and transpose of that array
     Matrix=np.array(Matrix).copy()
 
     Transpose=np.transpose(Matrix)
-    #Perform Matrix Multiplication to find AAt and AtA Matrices
     MultipliedU=np.dot(Matrix, Transpose)
 
     return MultipliedU
@@ -26,13 +24,11 @@ def SVDSetupV(Matrix):
 
 #Find Eigenvalues of Matrices U and V
 def EigenvaluesU(MultipliedU):
-    #Find Eigenvalues of AAt and AtA
     values_U,_=np.linalg.eig(MultipliedU)
 
     return values_U
 
 def EigenvaluesV(MultipliedV):
-    #Find Eigenvalues of AAt and AtA
     values_V,_=np.linalg.eig(MultipliedV)
     return values_V 
 
