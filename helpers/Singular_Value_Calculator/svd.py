@@ -1,10 +1,8 @@
 import numpy as np
-import pandas as pd
-import matplotlib as plt
-import sympy as smp
-from sympy.solvers import solve
-from sympy import Symbol
-
+from helpers.Eigne_Calculator.eigne import manual_eigen
+from helpers.Principal_Component_Calculator.pca import standardize_data
+def Standardize(Matrix):
+    Matrix=(Matrix-Matrix.mean()/Matrix.std())
 #Build Arrays, and Transpose of those arrays
 def SVDSetupU(Matrix):
     Matrix=np.array(Matrix).copy()
@@ -24,21 +22,21 @@ def SVDSetupV(Matrix):
 
 #Find Eigenvalues of Matrices U and V
 def EigenvaluesU(MultipliedU):
-    values_U,_=np.linalg.eig(MultipliedU)
+    values_U,_=manual_eigen(MultipliedU)
 
     return values_U
 
 def EigenvaluesV(MultipliedV):
-    values_V,_=np.linalg.eig(MultipliedV)
+    values_V,_=manual_eigen(MultipliedV)
     return values_V 
 
 #Find Eigenvectors of Matrices U and V
 def EigenvectorsU(MultipliedU):
-    _,vectors_U=np.linalg.eig(MultipliedU)
+    _,vectors_U=manual_eigen(MultipliedU)
     return vectors_U
 
 def EigenvectorsV(MultipliedV):
-    _,vectors_V=np.linalg.eig(MultipliedV)
+    _,vectors_V=manual_eigen(MultipliedV)
     return vectors_V
 
 #Compute Singular Values, the square roots of the eigenvalues of Matrix U.
@@ -74,6 +72,7 @@ def SVDBuild(matrix_U,SV_Array,matrix_V):
 
 #Total Helper Function
 def SVD(Matrix):
+    # Matrix=Standardize(Matrix)
     MultipliedU=SVDSetupU(Matrix)
     MultipliedV=SVDSetupV(Matrix)
     values_U=EigenvaluesU(MultipliedU)
