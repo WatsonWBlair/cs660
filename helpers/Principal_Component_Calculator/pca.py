@@ -1,18 +1,19 @@
 import numpy as np
 import seaborn as sns
+from helpers.Eigne_Calculator.eigne import manual_eigen
 """
 Comps is the number of principal components to find
 Data is the incoming data that we are finding the components of
 """
 def pca(comps = 2, data = [[]]):
     # Standardize Data
-    standardizedData = standardizeData(data)
+    standardizedData = standardize_data(data)
     
     # Compute Covariance Matrix
-    covMatrix = calculateCovariance(standardizedData)
+    covMatrix = covariance(standardizedData)
 
     # Call to Eigne_Calculator helper function
-    eigenvalues, eigenvectors = np.linalg.eig(covMatrix)
+    eigenvalues, eigenvectors = manual_eigen(covMatrix)
     
     # Create feature vector, sorted by their importance
     order_of_importance = np.argsort(eigenvalues)[::-1]
