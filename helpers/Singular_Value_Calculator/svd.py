@@ -1,8 +1,7 @@
 import numpy as np
 from helpers.Eigne_Calculator.eigne import manual_eigen
 from helpers.Principal_Component_Calculator.pca import standardize_data
-def Standardize(Matrix):
-    Matrix=(Matrix-Matrix.mean()/Matrix.std())
+
 #Build Arrays, and Transpose of those arrays
 def SVDSetupU(Matrix):
     Matrix=np.array(Matrix).copy()
@@ -72,7 +71,6 @@ def SVDBuild(matrix_U,SV_Array,matrix_V):
 
 #Total Helper Function
 def SVD(Matrix):
-    # Matrix=Standardize(Matrix)
     MultipliedU=SVDSetupU(Matrix)
     MultipliedV=SVDSetupV(Matrix)
     values_U=EigenvaluesU(MultipliedU)
