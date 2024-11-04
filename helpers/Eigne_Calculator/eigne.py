@@ -23,7 +23,7 @@ def manual_eigen(A):
     # Step 2: Eigenvector computation for each eigenvalue
     eigenvectors = []  # Initialize an empty list to store eigenvectors
     for lambda_val in eigenvalues:
-        I = np.eye(n)  # Create an identity matrix of size n
+        I = identity(n)  # Create an identity matrix of size n
         M = A - lambda_val * I  # Form matrix (A - lambda*I)
         
         # Step 3: Use Gaussian elimination to solve (A - lambda*I)x = 0
