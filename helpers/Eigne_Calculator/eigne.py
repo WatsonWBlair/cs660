@@ -8,7 +8,7 @@ def eigne(covMatrix):
     
     return result
 
-
+""" manual_eigen function authored by Syed Abdul Mubashir """
 def manual_eigen(A):
     # Check if the matrix is square
     if A.shape[0] != A.shape[1]:
@@ -42,6 +42,7 @@ def manual_eigen(A):
             for j in range(i + 1, n):
                 M[j] = M[j] - M[j][i] * M[i]
         
+        # TODO: Update 
         # Use the last row as an approximation for the eigenvector
         eigenvector = M[:, -1] if n > 1 else np.array([1])  # Handle single-row case
         eigenvectors.append(eigenvector)  # Add the computed eigenvector to the list
