@@ -1,13 +1,6 @@
 
 import numpy as np
 
-"""eigne function calculates the eigenvalues and eigenvectors for a given covariance matrix"""
-def eigne(covMatrix):
-
-    result = recursiveDeterminate(covMatrix)
-    
-    return result
-
 """ manual_eigen function authored by Syed Abdul Mubashir """
 def manual_eigen(A):
     # Check if the matrix is square
@@ -48,7 +41,7 @@ def manual_eigen(A):
         eigenvectors.append(eigenvector)  # Add the computed eigenvector to the list
 
     # Return real values if possible for eigenvalues and eigenvectors
-    return np.real_if_close(eigenvalues), [np.real_if_close(vec) for vec in eigenvectors]
+    return np.array(np.real_if_close(eigenvalues)), np.array([np.real_if_close(vec) for vec in eigenvectors])
 
 def recursiveDeterminate(matrix):
     size = matrix.shape[0]
