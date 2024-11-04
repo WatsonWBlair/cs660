@@ -61,7 +61,7 @@ class BenchmarkUtility:
     def plot_execution_times(self):
         fig, axs = plt.subplots(2, 1, figsize=(12, 10))
 
-        # Plotting Manual Execution Times
+        # Plotting Manual Execution Times in seconds
         axs[0].plot(self.labels, self.execution_times['manual_eig'], marker='o', label='Eigen', linestyle='-')
         axs[0].plot(self.labels, self.execution_times['manual_pca'], marker='o', label='PCA', linestyle='--')
         axs[0].plot(self.labels, self.execution_times['manual_svd'], marker='o', label='SVD', linestyle=':')
@@ -73,15 +73,15 @@ class BenchmarkUtility:
         axs[0].legend()
         axs[0].grid()
 
-        # Plotting Numpy Execution Times
-        axs[1].plot(self.labels, self.execution_times['sklearn_eig'], marker='o', label='Eigen', linestyle='-')
-        axs[1].plot(self.labels, self.execution_times['sklearn_pca'], marker='o', label='PCA', linestyle='--')
-        axs[1].plot(self.labels, self.execution_times['sklearn_svd'], marker='o', label='SVD', linestyle=':')
+        # Plotting NumPy Execution Times in milliseconds
+        axs[1].plot(self.labels, [time * 1000 for time in self.execution_times['sklearn_eig']], marker='o', label='Eigen', linestyle='-')
+        axs[1].plot(self.labels, [time * 1000 for time in self.execution_times['sklearn_pca']], marker='o', label='PCA', linestyle='--')
+        axs[1].plot(self.labels, [time * 1000 for time in self.execution_times['sklearn_svd']], marker='o', label='SVD', linestyle=':')
 
-        # Customize the second subplot for Numpy Times
+        # Customize the second subplot for NumPy Times
         axs[1].set_title("NumPy Execution Times")
         axs[1].set_xlabel("Matrix Size")
-        axs[1].set_ylabel("Execution Time (seconds)")
+        axs[1].set_ylabel("Execution Time (milliseconds)")
         axs[1].legend()
         axs[1].grid()
 
