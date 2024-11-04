@@ -6,13 +6,13 @@ from typing import List
 import logging
 from concurrent.futures import ThreadPoolExecutor
 
-# from helpers.Eigne_Calculator.[filename] import [eig_func] as eigen_manual
+from helpers.Eigne_Calculator.eigne import manual_eigen as eigen_manual
 from helpers.Principal_Component_Calculator.pca import pca as pca_manual
 # from helpers.Singular_Value_Calculator.[filename] import [svd_func] as svd_manual 
 
-def eigen_manual(data):
-    # Placeholder for the actual manual eigen decomposition logic
-    return np.array([]), np.array([])
+# def eigen_manual(data):
+#     # Placeholder for the actual manual eigen decomposition logic
+#     return np.array([]), np.array([])
 
 def svd_manual(data):
     # Placeholder for the actual manual SVD logic
