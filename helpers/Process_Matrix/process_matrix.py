@@ -8,15 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from helpers.Eigne_Calculator.eigne import manual_eigen as eigen_manual
 from helpers.Principal_Component_Calculator.pca import pca as pca_manual
-# from helpers.Singular_Value_Calculator.[filename] import [svd_func] as svd_manual 
-
-# def eigen_manual(data):
-#     # Placeholder for the actual manual eigen decomposition logic
-#     return np.array([]), np.array([])
-
-def svd_manual(data):
-    # Placeholder for the actual manual SVD logic
-    return np.array([]), np.array([]), np.array([])
+from helpers.Singular_Value_Calculator.svd import SVD as svd_manual 
 
 class BenchmarkUtility:
     def __init__(self, labels: List[str], n_components: int = 2):
