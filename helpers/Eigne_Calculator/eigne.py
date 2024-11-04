@@ -64,7 +64,7 @@ def recursiveDeterminate(matrix):
     return det
 
 def identity(shape):
-    result = np.zeros(shape)
-    for i in range(shape[0]):
+    result = np.zeros((shape, shape))
+    for i in range(shape):
         result[i][i] = 1
     return result
