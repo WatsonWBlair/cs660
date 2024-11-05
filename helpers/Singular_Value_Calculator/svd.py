@@ -39,8 +39,8 @@ def EigenvectorsV(MultipliedV):
     return vectors_V
 
 #Compute Singular Values, the square roots of the eigenvalues of Matrix U.
-def SingularValues(values_U):  
-    Sing_Values=np.sqrt(values_U)
+def SingularValues(values_V):  
+    Sing_Values=np.sqrt(values_V)
     Sing_Values=np.sort(Sing_Values)[::-1]
     return Sing_Values
 
